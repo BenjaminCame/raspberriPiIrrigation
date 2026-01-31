@@ -16,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/BenjaminCame/raspberriPiIrrigation/issues"
   },
-  "homepage": "https://github.com/BenjaminCame/raspberriPiIrrigation#readme"
+  "homepage": "https://github.com/BenjaminCame/raspberriPiIrrigation#readme",
+  "dependencies": {
+    "eslint-config-react-app": "^7.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1"
+  }
 }
