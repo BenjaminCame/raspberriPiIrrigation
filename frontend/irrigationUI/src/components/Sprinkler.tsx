@@ -1,15 +1,30 @@
 
 import { useState } from 'react'
+import type { SprinklerZone } from '../types/sprinkler'
+import Switch from 'react-switch'
+
+type SprinklerProps = {
+    sprinklerZone: SprinklerZone
+    
+}
 
 
-export default function Sprinkler() {
-    const [count, setCount] = useState(0) // use this of 'on off status of strinkler'
+export default function Sprinkler({sprinklerZone}: SprinklerProps) {
+    
+    const [isActive, setIsActive] = useState(sprinklerZone.isActive);
+
+    const handleToggle = () => {
+        setIsActive(isActive => !isActive);
+        //TODO switchs work on ui need to pass to server to change solinoid position
+    }
+
     return (
-        <div>
-            <h1>This is my sprinker component</h1>
-            <button onClick={() => setCount((count) => count + 1)}>
-                count is {count}
-            </button>
-        </div>
+        <span>
+            <h1>{sprinklerZone.name}</h1>
+            <Switch
+                onChange={handleToggle}
+                checked={isActive}
+            />
+        </span>
     )
 }

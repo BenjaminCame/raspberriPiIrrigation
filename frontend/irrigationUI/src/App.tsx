@@ -1,15 +1,17 @@
 
 import Sprinkler from './components/Sprinkler.tsx'
-// import { SprinkerZones } from './types/sprinker.ts'
-import { SPRINKLER_ZONES } from './types/sprinker.ts'
+// import type sprinklerProp from './components/Sprinkler.tsx'
+// import { SprinklerZone } from './types/sprinkler.ts'
+import { SPRINKLER_ZONES } from './types/sprinkler.tsx'
 import './App.css'
+
 
 function App() {
   return (
     <>
       <div>
-        {SPRINKLER_ZONES.map(zone => (
-          <Sprinkler />
+        {SPRINKLER_ZONES.map( (zone) => (
+          <Sprinkler sprinklerZone={zone}  />
         ))}
       </div>
       <p className="read-the-docs">

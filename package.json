@@ -18,7 +18,11 @@
   },
   "homepage": "https://github.com/BenjaminCame/raspberriPiIrrigation#readme",
   "dependencies": {
-    "eslint-config-react-app": "^7.0.1"
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/material": "^7.3.7",
+    "eslint-config-react-app": "^7.0.1",
+    "react-switch": "^7.1.0"
   },
   "devDependencies": {
     "eslint": "^8.57.1"
