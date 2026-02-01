@@ -1,22 +1,20 @@
 
 import Sprinkler from './components/Sprinkler.tsx'
-// import type sprinklerProp from './components/Sprinkler.tsx'
-// import { SprinklerZone } from './types/sprinkler.ts'
 import { SPRINKLER_ZONES } from './types/sprinkler.tsx'
+import WebSocketConnection from './services/webSocketService.tsx'
 import './App.css'
 
 
 function App() {
   return (
     <>
+      <WebSocketConnection/>
+      <h1>home Irrigation system</h1>
       <div>
         {SPRINKLER_ZONES.map( (zone) => (
           <Sprinkler sprinklerZone={zone}  />
         ))}
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }

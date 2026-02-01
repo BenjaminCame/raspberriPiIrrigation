@@ -1,8 +1,9 @@
 const { createServer } = require('node:http');
 const fs = require('fs');
 const WebSocket = require('ws');
+const readline = require('node:readline')
 
-const hostname = 'local';
+const hostname = 'localhost';
 const port = 3000;
 
 const server = createServer((req, res) => {
@@ -20,6 +21,22 @@ server.listen(port, '0.0.0.0', () => {
 
 //creating a websocket on port 5000
 const wss = new WebSocket.Server({port:8000});
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+})
+
+function recursiveAsyncReadLine(socket){
+    rl.question('Command: ', (answer) => {
+    if (answer === 'exit') {
+      console.log('Exiting CLI. Goodbye!');
+      return rl.close(); // Closes the interface and exits
+    }
+    socket.send(answer);
+    console.log(`Got it! Your answer was: "${answer}"`);
+    recursiveAsyncReadLine(socket); // Calls the function again to ask a new question
+  });
+}
 
 console.log('websocket server is running on ws://localhost:8000');
 
@@ -32,8 +49,8 @@ wss.on('connection', (ws) => {
     ws.on('message', (message) => {
         console.log(`received: ${message}`);
         //echo the message back to client
-        ws.send('Server received: ${message}');
     });
+    recursiveAsyncReadLine(ws);
 
     ws.on('close', () => {
         console.log('Client disconneced')
