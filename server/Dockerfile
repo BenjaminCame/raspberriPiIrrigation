@@ -2,7 +2,7 @@ FROM node:bookworm
 
 WORKDIR /app
 
-COPY package-lock.json package.json irrigationServer.js ./
+COPY package-lock.json package.json irrigators.json irrigationServer.js ./
 
 RUN npm install
 

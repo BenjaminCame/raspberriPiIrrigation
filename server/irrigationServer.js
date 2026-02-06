@@ -1,6 +1,8 @@
 const { createServer } = require('node:http');
 const WebSocket = require('ws');
 const readline = require('node:readline');
+const { stringify } = require('node:querystring');
+irrigationNozzles = require('./irrigators.json');
 
 const hostname = 'irrigation-network';
 const port = process.env.PORT || 3000;
@@ -56,6 +58,8 @@ wss.on('connection', (ws) => {
     console.log('New client connected');
 
     ws.send('welcome to the websocket server');
+    //TODO sending sprinkler dater in plain text not good practise 
+    ws.send(JSON.stringify(irrigationNozzles))
 
     ws.on('message', (message) => {
         console.log(`received: ${message}`);
