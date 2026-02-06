@@ -1,8 +1,6 @@
 const { createServer } = require('node:http');
-const fs = require('fs');
 const WebSocket = require('ws');
 const readline = require('node:readline');
-const { start } = require('node:repl');
 
 const hostname = 'irrigation-network';
 const port = process.env.PORT || 3000;
@@ -51,17 +49,7 @@ function startCLI() {
     });
 }
 
-// function recursiveAsyncReadLine(socket){
-//     rl.question('Command: ', (answer) => {
-//     if (answer === 'exit') {
-//       console.log('Exiting CLI. Goodbye!');
-//       rl.close(); // Closes the interface and exits
-//     }
-//     socket.send(answer);
-//     console.log(`Got it! Your answer was: "${answer}"`);
-//     recursiveAsyncReadLine(socket); // Calls the function again to ask a new question
-//   });
-// }
+
 
 // Connection Event Handler
 wss.on('connection', (ws) => {
