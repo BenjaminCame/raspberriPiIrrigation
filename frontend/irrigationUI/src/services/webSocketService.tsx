@@ -7,7 +7,8 @@ export default function webScoketConnection(){
     const wsRef = useRef<WebSocket | null>(null);
 
     useEffect (() => {
-        const ws = new WebSocket('ws://localhost:8000');
+        const ws = new WebSocket(`ws://${window.location.hostname}:3000`)
+        // const ws = new WebSocket('ws://irrigation-server:3000');
         wsRef.current = ws;
 
 

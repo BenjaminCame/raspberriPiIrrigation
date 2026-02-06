@@ -1,0 +1,13 @@
+services:
+  irrigation-ui:
+    build: ./
+    image: irrigation-ui
+    container_name: irrigation-ui
+    ports:
+      - "8000:8000"
+    networks:
+      - irrigation-network
+
+networks:
+  irrigation-network:
+    external: true
