@@ -1,19 +1,18 @@
 services:
   irrigation:
-    build: ./
+    build: ./server
     image: irrigation-server
     container_name: irrigation-server
-    networks:
-      - irrigation-network
     ports:
       - "3000:3000"
     environment:
       - PORT=3000
     stdin_open: true
     tty: true
-
-
-
-networks:
-  irrigation-network:
-    external: true
+  
+  irrigation-ui:
+    build: ./frontend/irrigationUI
+    image: irrigation-ui
+    container_name: irrigation-ui
+    ports:
+      - "8000:8000"
