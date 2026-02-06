@@ -1,0 +1,7 @@
+services:
+  irrigation:
+    image: my-irrigation-server
+    container_name: irrigation-server
+    ports:
+      - "3000:3000"
+      - "8000:8000"

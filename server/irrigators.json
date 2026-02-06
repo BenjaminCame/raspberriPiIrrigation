@@ -9,19 +9,19 @@
         {
             "id":"frontGarden",
             "lable":"Front Garden",
-            "pin": 1,
+            "pin": 2,
             "isActive": false
         },
         {
             "id":"backYard",
             "lable":"Back Yard",
-            "pin": 1,
+            "pin": 3,
             "isActive": false
         },
         {
             "id":"frontGarden",
             "lable":"Front Yard",
-            "pin": 1,
+            "pin": 4,
             "isActive": false
         }
     ]

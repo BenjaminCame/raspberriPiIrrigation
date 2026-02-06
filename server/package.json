@@ -4,6 +4,7 @@
   "description": "",
   "main": "irrigationServer.js",
   "scripts": {
+    "npm": "npm run irrigationServer.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,7 +23,8 @@
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^7.3.7",
     "eslint-config-react-app": "^7.0.1",
-    "react-switch": "^7.1.0"
+    "react-switch": "^7.1.0",
+    "ws": "^8.19.0"
   },
   "devDependencies": {
     "eslint": "^8.57.1"
