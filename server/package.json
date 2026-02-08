@@ -2,7 +2,8 @@
   "name": "raspberripiirrigation",
   "version": "1.0.0",
   "description": "",
-  "main": "irrigationServer.js",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
     "npm": "npm run irrigationServer.js",
     "test": "echo \"Error: no test specified\" && exit 1"
