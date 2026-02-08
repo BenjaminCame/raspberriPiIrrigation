@@ -5,8 +5,8 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const irrigationNozzles = require("./irrigators.json");
 
-const hostname = 'irrigation-network';
-const port = process.env.PORT || 3000;
+// const hostname = 'irrigation-network';
+// const port = process.env.PORT || 3000;
 const wss = new WebSocketServer({ noServer: true });
 
 export function broadcastIrrigationStatus(){
@@ -70,6 +70,3 @@ export function setupWSServer(server){
         });
     }
 }
-
-
-// Connection Event Handler

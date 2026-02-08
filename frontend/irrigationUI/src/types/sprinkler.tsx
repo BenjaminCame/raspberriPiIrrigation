@@ -5,7 +5,7 @@ export type SprinklerZone = {
     gpioPin: number
 }
 
-//TODO: I now have a json file in the server hat holds this, will need to implement data pasing on init 
+//TODO: I now have a json file in the server that holds this, will need to implement data passing on init 
 export const SPRINKLER_ZONES: SprinklerZone[] = [
     { id: 'frontLawn', name: 'Front Lawn', gpioPin: 17, isActive: false },
     { id: 'backYard', name: 'Back Yard', gpioPin: 18, isActive: false },
