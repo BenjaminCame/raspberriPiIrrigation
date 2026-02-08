@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import type { SprinklerZone } from '../types/sprinkler'
 import Switch from 'react-switch'
+import axios from 'axios'
 
 type SprinklerProps = {
     sprinklerZone: SprinklerZone
@@ -11,11 +12,18 @@ type SprinklerProps = {
 
 export default function Sprinkler({sprinklerZone}: SprinklerProps) {
     
+    //TODO current isActive is not determined by the backend 
     const [isActive, setIsActive] = useState(sprinklerZone.isActive);
 
-    const handleToggle = () => {
-        setIsActive(isActive => !isActive);
-        //TODO switchs work on ui need to pass to server to change solinoid position
+    const handleToggle = async () => {
+        setIsActive(isActive => !isActive);//TODO messy junk code refactor asap
+        const res = await axios.post("http://localhost:3000/sprinklerStatus", {
+            params:{
+                id: sprinklerZone.id,
+                isActive: Boolean(isActive)
+            }
+        });
+        console.log(res)
     }
 
     return (

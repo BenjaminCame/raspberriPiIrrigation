@@ -6,7 +6,7 @@ import { broadcastIrrigationStatus } from './irrigationWSServer.js'
 
 const filePath = path.resolve('./irrigators.json');
 
-function readIrrigators() {
+export function readIrrigators() {
     try {
         const data = fs.readFileSync(filePath, "utf-8"); // read as string
         return JSON.parse(data); // convert to JS object
@@ -25,18 +25,19 @@ function writeIrrigators(data){
     }
 }
 
-function updateZoneStatus(res, id , isActiveStr){
+function updateZoneStatus(res, id , isActive){
+
     const irrigationStatus = readIrrigators();
-    
+
     const zone = irrigationStatus.zones.find(z => z.pin === Number(id));
 
     if(!zone){
         res.end(`Zone with pin ${id} was not found!`);
     }
-    
-    const isActive = isActiveStr?.toLowerCase() === "true"; //TODO: equate string type true and false to boolean possibly a better solution (does not work with 0,1)
+    console.log(isActive)
+    // const isActive = isActiveStr?.toLowerCase() === "true"; //TODO: equate string type true and false to boolean possibly a better solution (does not work with 0,1)
+    // console.log("cats")
     zone.isActive = isActive;
-
     writeIrrigators(irrigationStatus);
     broadcastIrrigationStatus();
 }
@@ -59,12 +60,32 @@ export function setupHttpServer(server){
         }
     } else if (req.method === "POST"){
         const myURL = new URL(req.url, 'http://localhost:3000');
-        const id = myURL.searchParams.get("id");
-        const isActive = myURL.searchParams.get("isActive");
-        updateZoneStatus(res, id, isActive);
+    
+        if(myURL.pathname === "/sprinklerStatus"){
+            let body = "";
 
-        res.end(`Attempted to change ${id} status to ${isActive}`)
-            
+            req.on("data", chunk => {
+                body += chunk.toString();
+            })
+            req.on("end", () => {
+                try {
+                    const parsedBody = JSON.parse(body);
+                    const id = parsedBody.id;
+                    const isActive = parsedBody.isActive;
+                    console.log(isActive)
+                    updateZoneStatus(res, id, isActive);
+                    console.log("baasdhasd")
+                    res.end(`Attempted to change ${id} status to ${isActive}`)
+                } catch (err) {
+                    console.log(err)
+                    res.writeHead(400, {"Content-Type": "text/plain"});
+                    res.end("invalid Json in request body")
+                } 
+            })
+        } else {
+            res.writeFileSync(404, {"Content-Type": "test/plain"})
+            res.end('error POST request not found')
+        }     
     }
   });
 }

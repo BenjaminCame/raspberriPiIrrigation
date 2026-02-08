@@ -1,18 +1,18 @@
 import { WebSocketServer } from 'ws';
 import readline from 'node:readline';
 import { createRequire } from "module";
+import { readIrrigators } from "./irrigationhttpServer.js"
 
 const require = createRequire(import.meta.url);
 const irrigationNozzles = require("./irrigators.json");
 
-// const hostname = 'irrigation-network';
-// const port = process.env.PORT || 3000;
 const wss = new WebSocketServer({ noServer: true });
 
 export function broadcastIrrigationStatus(){
+    let irrigationStatus = readIrrigators();
     wss.clients.forEach(client => {
         if(client.readyState === WebSocket.OPEN ){
-            client.send(JSON.stringify(irrigationNozzles));
+            client.send(JSON.stringify(irrigationStatus));
         };
     });
 };
