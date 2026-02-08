@@ -1,29 +1,28 @@
 {
-    "zones":[
-        {
-            "id":"frontYard",
-            "lable":"Front Yard",
-            "pin": 1,
-            "isActive": false
-        },
-        {
-            "id":"frontGarden",
-            "lable":"Front Garden",
-            "pin": 2,
-            "isActive": false
-        },
-        {
-            "id":"backYard",
-            "lable":"Back Yard",
-            "pin": 3,
-            "isActive": false
-        },
-        {
-            "id":"frontGarden",
-            "lable":"Front Yard",
-            "pin": 4,
-            "isActive": false
-        }
-    ]
-
+  "zones": [
+    {
+      "id": "frontYard",
+      "lable": "Front Yard",
+      "pin": 1,
+      "isActive": false
+    },
+    {
+      "id": "frontGarden",
+      "lable": "Front Garden",
+      "pin": 2,
+      "isActive": false
+    },
+    {
+      "id": "backYard",
+      "lable": "Back Yard",
+      "pin": 3,
+      "isActive": true
+    },
+    {
+      "id": "frontGarden",
+      "lable": "Front Yard",
+      "pin": 4,
+      "isActive": false
+    }
+  ]
 }
