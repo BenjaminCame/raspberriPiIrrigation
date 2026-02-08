@@ -1,6 +1,8 @@
 import http from "node:http";
 import fs from "node:fs";
 import path from "node:path";
+import { URL } from "node:url";
+import { broadcastIrrigationStatus } from './irrigationWSServer.js'
 
 const filePath = path.resolve('./irrigators.json');
 
@@ -13,6 +15,32 @@ function readIrrigators() {
         return {}; // fallback
     }
 }
+
+function writeIrrigators(data){
+    // console.log(data);
+    try {
+        fs.writeFileSync(filePath, JSON.stringify(data,null, 2),"utf-8");
+    } catch (err) {
+        console.error("Error writing JSON file", err);
+    }
+}
+
+function updateZoneStatus(res, id , isActiveStr){
+    const irrigationStatus = readIrrigators();
+    
+    const zone = irrigationStatus.zones.find(z => z.pin === Number(id));
+
+    if(!zone){
+        res.end(`Zone with pin ${id} was not found!`);
+    }
+    
+    const isActive = isActiveStr?.toLowerCase() === "true"; //TODO: equate unknown type true and false to boolean possibly a better solution (does not work with 0,1)
+    zone.isActive = isActive;
+
+    writeIrrigators(irrigationStatus);
+    broadcastIrrigationStatus();
+}
+
 
 export function setupHttpServer(server){
     server.on('request', (req, res) => {
@@ -29,33 +57,14 @@ export function setupHttpServer(server){
         res.writeHead(200, {'Content-Type': 'text/plain'});
         res.end('HTTP Server Running');
         }
+    } else if (req.method === "POST"){
+        const myURL = new URL(req.url, 'http://localhost:3000');
+        const id = myURL.searchParams.get("id");
+        const isActive = myURL.searchParams.get("isActive");
+        updateZoneStatus(res, id, isActive);
+
+        res.end(`Attempted to change ${id} status to ${isActive}`)
+            
     }
   });
 }
-
-
-// const httpServer = http.createServer((req,res) => {
-//     // const { url, method } = req;
-
-//     // if ( method === 'GET' & url === '/status' ) {
-//     //     res.end(JSON.stringify(json))
-//     // }
-//     // else if ( method === 'POST'){
-//     //     if ( url === '/sprinker' ){
-//     //         urlParams = new URLSearchParams(url)
-//     //         id = urlParams.get('id');
-//     //         isActive = urlParams.get('isActive')
-
-//     //         console.log(id , isActive)
-//     //         res.end(`attempted to change ${id} status to ${isActive}`)
-//     //     }
-//     // }
-
-//     // res.writeHead(200, { 'Content-Type': 'text/plain' });
-//     // res.end(`req url = ${url}, method = ${method} \n`);
-// })
-
-// const PORT = 3000;
-// server.listen(PORT,() => {
-//     console.log(`HTTP Server is running on ${PORT}`);
-// })

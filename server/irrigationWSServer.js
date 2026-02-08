@@ -1,14 +1,29 @@
 import { WebSocketServer } from 'ws';
 import readline from 'node:readline';
 import { createRequire } from "module";
+
 const require = createRequire(import.meta.url);
 const irrigationNozzles = require("./irrigators.json");
 
 const hostname = 'irrigation-network';
 const port = process.env.PORT || 3000;
+const wss = new WebSocketServer({ noServer: true });
+
+export function broadcastIrrigationStatus(){
+    wss.clients.forEach(client => {
+        if(client.readyState === WebSocket.OPEN ){
+            client.send(JSON.stringify(irrigationNozzles));
+        };
+    });
+};
 
 export function setupWSServer(server){
-    const wss = new WebSocketServer({ server });
+    server .on('upgrade', (request,socket,head) => {
+        wss.handleUpgrade(request,socket,head, (ws) => {
+            wss.emit('connection',ws, request);
+        });
+    });
+
     wss.on('connection', (ws) => {
         console.log('New client connected');
 
