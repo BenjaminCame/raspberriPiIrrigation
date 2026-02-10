@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+import type { SprinklerStatus } from '../types/sprinkler.tsx'
 
-export default function webScoketConnection(){
+export type WebSocketConnectionProps = {
+  sendSprinklerStatus: (status: SprinklerStatus[]) => void;
+};
+
+export default function webScoketConnection({sendSprinklerStatus}: WebSocketConnectionProps){
     const [messages, setMessages] = useState<string[]>([]);
     const [status, setStatus] = useState('connection to server...');
     const [inputValue, setInputValue] = useState('');
@@ -16,7 +21,15 @@ export default function webScoketConnection(){
         };
 
         ws.onmessage = (event: MessageEvent) => {
-        setMessages(prev => [...prev, `Server: ${event.data}`]);
+          
+          try {
+            const data: SprinklerStatus[] = JSON.parse(event.data);
+            setMessages(prev => [...prev, `recieved ${data}`]);
+            sendSprinklerStatus(data);
+            console.log("final")
+          } catch (err) {
+            console.error('Invalid message from server', err);
+          }
         };
 
         ws.onerror = (event) => {

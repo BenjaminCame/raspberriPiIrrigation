@@ -29,7 +29,7 @@ function updateZoneStatus(res, id , isActive){
 
     const irrigationStatus = readIrrigators();
 
-    const zone = irrigationStatus.zones.find(z => z.pin === Number(id));
+    const zone = irrigationStatus.find(z => z.pin === Number(id));
 
     if(!zone){
         res.end(`Zone with pin ${id} was not found!`);

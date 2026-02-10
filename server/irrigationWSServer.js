@@ -27,7 +27,7 @@ export function setupWSServer(server){
     wss.on('connection', (ws) => {
         console.log('New client connected');
 
-        ws.send('welcome to the websocket server');
+        // ws.send('welcome to the websocket server');
         //TODO sending sprinkler dater in plain text not good practise
         ws.send(JSON.stringify(irrigationNozzles))
 
