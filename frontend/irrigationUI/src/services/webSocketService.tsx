@@ -8,9 +8,7 @@ export default function webScoketConnection(){
 
     useEffect (() => {
         const ws = new WebSocket(`ws://${window.location.hostname}:3000`)
-        // const ws = new WebSocket('ws://irrigation-server:3000');
         wsRef.current = ws;
-
 
         ws.onopen = () => {
         console.log('Connected to the Irrigation WebSocket server');
@@ -45,24 +43,24 @@ export default function webScoketConnection(){
     }
 
     return (
-            <div>
-      <h1>WebSocket Client</h1>
-      <div id="status">{status}</div>
-      <div id="messages" style={{ margin: '1em 0', minHeight: '100px', border: '1px solid #ccc', padding: '0.5em' }}>
-        {messages.map((msg, idx) => (
-          <div key={idx}>{msg}</div>
-        ))}
-      </div>
       <div>
-        <input
-          type="text"
-          placeholder="Type your message"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-        />
-        <button onClick={sendMessage}>Send</button>
+        <h1>WebSocket Client</h1>
+        <div id="status">{status}</div>
+        <div id="messages" style={{ margin: '1em 0', minHeight: '100px', border: '1px solid #ccc', padding: '0.5em' }}>
+          {messages.map((msg, idx) => (
+            <div key={idx}>{msg}</div>
+          ))}
+        </div>
+        <div>
+          <input
+            type="text"
+            placeholder="Type your message"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+          />
+          <button onClick={sendMessage}>Send</button>
+        </div>
       </div>
-    </div>
     )
 }
