@@ -25,19 +25,27 @@ function writeIrrigators(data){
     }
 }
 
-function updateZoneStatus(res, id , isActive){
+//TODO investigate a better method for this
+const toBoolean = v => {
+    if (v === undefined) return false;
+    if (v === true || v === false) return v;
+    if (v == 1) return true;
+    if (v == 0) return false;
+    if (typeof v === "string") return v.toLowerCase() === "true";
+    return false;
+};
+
+function updateZoneStatus(res, pin , isActive){
 
     const irrigationStatus = readIrrigators();
-
-    const zone = irrigationStatus.find(z => z.pin === Number(id));
+    const zone = irrigationStatus.find(z => z.pin === Number(pin));
+    
 
     if(!zone){
-        res.end(`Zone with pin ${id} was not found!`);
+        res.end(`Zone with pin ${pin} was not found!`);
     }
-    console.log(isActive)
-    // const isActive = isActiveStr?.toLowerCase() === "true"; //TODO: equate string type true and false to boolean possibly a better solution (does not work with 0,1)
-    // console.log("cats")
-    zone.isActive = isActive;
+
+    zone.isActive = toBoolean(isActive);//TODO investigate a cleaner method to passing boolean around
     writeIrrigators(irrigationStatus);
     broadcastIrrigationStatus();
 }
@@ -46,6 +54,21 @@ function updateZoneStatus(res, id , isActive){
 export function setupHttpServer(server){
     server.on('request', (req, res) => {
     
+    // handel CORS for development, can remove later
+    // 1️⃣ Set common CORS headers for all requests
+    res.setHeader('Access-Control-Allow-Origin', '*'); // allow all origins
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS'); // allowed methods
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type'); // allowed headers
+
+    // 2️⃣ Handle preflight OPTIONS request
+    if (req.method === 'OPTIONS') {
+      res.writeHead(204); // No Content
+      res.end();
+      return; // stop further processing
+    }
+
+
+
     if( req.method === 'GET'){
         if (req.url === '/status') {
             res.writeHead(200, {'Content-Type': 'application/json'});
@@ -70,12 +93,10 @@ export function setupHttpServer(server){
             req.on("end", () => {
                 try {
                     const parsedBody = JSON.parse(body);
-                    const id = parsedBody.id;
+                    const pin = parsedBody.pin;
                     const isActive = parsedBody.isActive;
-                    console.log(isActive)
-                    updateZoneStatus(res, id, isActive);
-                    console.log("baasdhasd")
-                    res.end(`Attempted to change ${id} status to ${isActive}`)
+                    updateZoneStatus(res, pin, isActive);
+                    res.end(`Attempted to change ${pin} status to ${isActive}`)
                 } catch (err) {
                     console.log(err)
                     res.writeHead(400, {"Content-Type": "text/plain"});

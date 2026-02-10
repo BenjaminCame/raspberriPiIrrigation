@@ -1,5 +1,4 @@
-
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { SprinklerStatus } from '../types/sprinkler'
 import Switch from 'react-switch'
 import axios from 'axios'
@@ -11,19 +10,26 @@ type SprinklerProps = {
 
 export default function Sprinkler({sprinklerZone}: SprinklerProps) {
     
-    //TODO current isActive is not determined by the backend 
     const [isActive, setIsActive] = useState(sprinklerZone.isActive);
+
+    useEffect(() => {
+        setIsActive(sprinklerZone.isActive)
+    },[sprinklerZone.isActive])
+
     console.log(sprinklerZone)
 
     const handleToggle = async () => {
-        setIsActive(isActive => !isActive);//TODO messy junk code refactor asap
-        const res = await axios.post("http://localhost:3000/sprinklerStatus", {
-            params:{
-                id: sprinklerZone.id,
-                isActive: Boolean(isActive)
-            }
-        });
-        console.log(res)
+        const newValue = !isActive;
+        setIsActive(newValue); // optimistic update
+        try {
+            await axios.post("http://localhost:3000/sprinklerStatus", {
+                pin: sprinklerZone.pin,
+                isActive: newValue
+            });
+        } catch (err) {
+            console.log(err);
+            setIsActive(sprinklerZone.isActive);//reverts if post fails (need to test behaviour)
+        }
     }
 
     return (
@@ -31,7 +37,7 @@ export default function Sprinkler({sprinklerZone}: SprinklerProps) {
             <h1>{sprinklerZone.label}</h1>
             <Switch
                 onChange={handleToggle}
-                checked={sprinklerZone.isActive}
+                checked={isActive}
             />
         </span>
     )
