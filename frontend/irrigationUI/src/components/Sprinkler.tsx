@@ -22,7 +22,7 @@ export default function Sprinkler({sprinklerZone}: SprinklerProps) {
         const newValue = !isActive;
         setIsActive(newValue); // optimistic update
         try {
-            await axios.post("http://localhost:3000/sprinklerStatus", {
+            await axios.post("http://192.168.86.35:3000/sprinklerStatus", {
                 id: sprinklerZone.id,
                 isActive: newValue
             });
