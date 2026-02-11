@@ -3,6 +3,7 @@ services:
     build: ./server
     image: irrigation-server
     container_name: irrigation-server
+    privileged: true
     ports:
       - "3000:3000"
     environment:

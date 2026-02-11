@@ -3,13 +3,17 @@ import fs from "node:fs";
 import path from "node:path";
 import { URL } from "node:url";
 import { broadcastIrrigationStatus } from './irrigationWSServer.js'
+import { createRequire } from "module"
+const require = createRequire(import.meta.url)
+const { Gpio } = require('onoff')
 import dotenv from 'dotenv'
-import Gpio from 'onoff'
+
 
 dotenv.config()
 
 const LOCAL_IP = process.env.LOCAL_IP;
 const filePath = path.resolve('./irrigators.json');
+
 const frontLawn = new Gpio(2, 'out');
 
 export function readIrrigators() {
@@ -99,6 +103,7 @@ export function setupHttpServer(server){
                     const parsedBody = JSON.parse(body);
                     const id = parsedBody.id;
                     const isActive = parsedBody.isActive;
+			console.log("here i am")
                     frontLawn.writeSync(frontlawm.readSync() === 0 ? 1:0);
                     updateZoneStatus(res, id, isActive);
                     res.end(`Attempted to change ${id} status to ${isActive}`)
