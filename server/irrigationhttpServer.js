@@ -3,7 +3,11 @@ import fs from "node:fs";
 import path from "node:path";
 import { URL } from "node:url";
 import { broadcastIrrigationStatus } from './irrigationWSServer.js'
+import dotenv from 'dotenv'
 
+dotenv.config()
+
+const LOCAL_IP = process.env.LOCAL_IP;
 const filePath = path.resolve('./irrigators.json');
 
 export function readIrrigators() {
@@ -81,7 +85,7 @@ export function setupHttpServer(server){
             res.end('HTTP Server Running');
         }
     } else if (req.method === "POST"){
-        const myURL = new URL(req.url, `http://${serverIP}:3000`);
+        const myURL = new URL(req.url, `http://${LOCAL_IP}:3000`);
     
         if(myURL.pathname === "/sprinklerStatus"){
             let body = "";

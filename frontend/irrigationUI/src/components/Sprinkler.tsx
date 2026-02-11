@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import type { SprinklerStatus } from '../types/sprinkler'
 import Switch from 'react-switch'
 import axios from 'axios'
+import { API_URL } from '../config'
 
 type SprinklerProps = {
     sprinklerZone: SprinklerStatus
@@ -22,7 +23,7 @@ export default function Sprinkler({sprinklerZone}: SprinklerProps) {
         const newValue = !isActive;
         setIsActive(newValue); // optimistic update
         try {
-            await axios.post("http://192.168.86.35:3000/sprinklerStatus", {
+            await axios.post(`${ API_URL }/sprinklerStatus`, {
                 id: sprinklerZone.id,
                 isActive: newValue
             });

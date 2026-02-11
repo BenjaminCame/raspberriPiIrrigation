@@ -11,6 +11,9 @@ node_modules
 dist
 dist-ssr
 *.local
+frontend/irrigationUI/.env
+server/.env
+
 
 # Editor directories and files
 .vscode/*
