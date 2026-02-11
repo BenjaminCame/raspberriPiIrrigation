@@ -21,6 +21,7 @@
   "homepage": "https://github.com/BenjaminCame/raspberriPiIrrigation#readme",
   "dependencies": {
     "dotenv": "^17.2.4",
+    "gpio": "^0.2.10",
     "ws": "^8.19.0"
   }
 }
