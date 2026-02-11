@@ -81,7 +81,7 @@ export function setupHttpServer(server){
             res.end('HTTP Server Running');
         }
     } else if (req.method === "POST"){
-        const myURL = new URL(req.url, 'http://localhost:3000');
+        const myURL = new URL(req.url, `http://${serverIP}:3000`);
     
         if(myURL.pathname === "/sprinklerStatus"){
             let body = "";
