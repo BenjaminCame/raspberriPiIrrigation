@@ -4,7 +4,7 @@ import path from "node:path";
 import { URL } from "node:url";
 import { broadcastIrrigationStatus } from './irrigationWSServer.js'
 import dotenv from 'dotenv'
-import onoff from 'Gpio'
+import Gpio from 'onoff'
 
 dotenv.config()
 
