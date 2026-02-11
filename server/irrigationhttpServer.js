@@ -54,13 +54,12 @@ function updateZoneStatus(res, id , isActive){
 export function setupHttpServer(server){
     server.on('request', (req, res) => {
     
-    // handel CORS for development, can remove later
-    // 1️⃣ Set common CORS headers for all requests
-    res.setHeader('Access-Control-Allow-Origin', '*'); // allow all origins
+    // Set common CORS headers for all requests
+    res.setHeader('Access-Control-Allow-Origin', '*'); // allow all origins TODO have only my website as origin
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS'); // allowed methods
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type'); // allowed headers
 
-    // 2️⃣ Handle preflight OPTIONS request
+    //Handle preflight OPTIONS request
     if (req.method === 'OPTIONS') {
       res.writeHead(204); // No Content
       res.end();
