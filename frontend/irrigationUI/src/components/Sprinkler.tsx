@@ -7,7 +7,7 @@ type SprinklerProps = {
     sprinklerZone: SprinklerStatus
 }
 
-
+//TODO should probably create a sprinkler zone object as opposed to the JSON file...
 export default function Sprinkler({sprinklerZone}: SprinklerProps) {
     
     const [isActive, setIsActive] = useState(sprinklerZone.isActive);
@@ -23,7 +23,7 @@ export default function Sprinkler({sprinklerZone}: SprinklerProps) {
         setIsActive(newValue); // optimistic update
         try {
             await axios.post("http://localhost:3000/sprinklerStatus", {
-                pin: sprinklerZone.pin,
+                id: sprinklerZone.id,
                 isActive: newValue
             });
         } catch (err) {

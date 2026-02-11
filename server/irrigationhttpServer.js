@@ -35,14 +35,14 @@ const toBoolean = v => {
     return false;
 };
 
-function updateZoneStatus(res, pin , isActive){
+function updateZoneStatus(res, id , isActive){
 
     const irrigationStatus = readIrrigators();
-    const zone = irrigationStatus.find(z => z.pin === Number(pin));
+    const zone = irrigationStatus.find(z => z.id === Number(id));
     
 
     if(!zone){
-        res.end(`Zone with pin ${pin} was not found!`);
+        res.end(`Zone with pin ${id} was not found!`);
     }
 
     zone.isActive = toBoolean(isActive);//TODO investigate a cleaner method to passing boolean around
@@ -93,10 +93,10 @@ export function setupHttpServer(server){
             req.on("end", () => {
                 try {
                     const parsedBody = JSON.parse(body);
-                    const pin = parsedBody.pin;
+                    const id = parsedBody.id;
                     const isActive = parsedBody.isActive;
-                    updateZoneStatus(res, pin, isActive);
-                    res.end(`Attempted to change ${pin} status to ${isActive}`)
+                    updateZoneStatus(res, id, isActive);
+                    res.end(`Attempted to change ${id} status to ${isActive}`)
                 } catch (err) {
                     console.log(err)
                     res.writeHead(400, {"Content-Type": "text/plain"});

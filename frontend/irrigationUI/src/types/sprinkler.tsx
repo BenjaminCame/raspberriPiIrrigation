@@ -1,6 +1,6 @@
 export type SprinklerStatus = {
-    id: string,
+    id: number,
     label: string,
-    pin: number,
+    gpio: number,
     isActive: boolean
 }

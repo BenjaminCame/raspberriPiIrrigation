@@ -1,26 +1,38 @@
 [
   {
-    "id": "frontYard",
-    "label": "Front Yard",
-    "pin": 1,
+    "id": 1,
+    "label": "Nature Strip",
+    "gpio": 1,
     "isActive": false
   },
   {
-    "id": "frontGarden",
-    "label": "Front Garden",
-    "pin": 2,
+    "id": 2,
+    "label": "Front Lawn",
+    "gpio": 2,
     "isActive": false
   },
   {
-    "id": "backYard",
+    "id": 3,
+    "label": "Front Bed",
+    "gpio": 3,
+    "isActive": false
+  },
+  {
+    "id": 4,
     "label": "Back Yard",
-    "pin": 3,
-    "isActive": true
+    "gpio": 4,
+    "isActive": false
   },
   {
-    "id": "frontGarden",
-    "label": "Front Yard",
-    "pin": 4,
+    "id": 5,
+    "label": "Back Beds",
+    "gpio": 5,
+    "isActive": false
+  },
+  {
+    "id": 6,
+    "label": "Back Vegetable Patch",
+    "gpio": 6,
     "isActive": false
   }
 ]
