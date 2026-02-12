@@ -90,8 +90,9 @@ export function setupHttpServer(server){
             res.end('HTTP Server Running');
         }
     } else if (req.method === "POST"){
-        const myURL = new URL(req.url, `http://${LOCAL_IP}:3000`);
-    
+	console.log(req.url)
+        const myURL = new URL(req.url, `http://192.168.86.30:3000`);
+	console.log(myURL);    
         if(myURL.pathname === "/sprinklerStatus"){
             let body = "";
 
@@ -104,7 +105,7 @@ export function setupHttpServer(server){
                     const id = parsedBody.id;
                     const isActive = parsedBody.isActive;
 			console.log("here i am")
-                    frontLawn.writeSync(frontlawm.readSync() === 0 ? 1:0);
+                    frontLawn.writeSync(frontLawn.readSync() === 0 ? 1:0);
                     updateZoneStatus(res, id, isActive);
                     res.end(`Attempted to change ${id} status to ${isActive}`)
                 } catch (err) {
