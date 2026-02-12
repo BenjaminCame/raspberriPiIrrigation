@@ -47,8 +47,8 @@ const toBoolean = v => {
 function updateZoneStatus(res, id , isActive){
 
     const irrigationStatus = readIrrigators();
+
     const zone = irrigationStatus.find(z => z.id === Number(id));
-    
 
     if(!zone){
         res.end(`Zone with pin ${id} was not found!`);
@@ -75,8 +75,6 @@ export function setupHttpServer(server){
       return; // stop further processing
     }
 
-
-
     if( req.method === 'GET'){
         if (req.url === '/status') {
             res.writeHead(200, {'Content-Type': 'application/json'});
@@ -90,9 +88,8 @@ export function setupHttpServer(server){
             res.end('HTTP Server Running');
         }
     } else if (req.method === "POST"){
-	console.log(req.url)
-        const myURL = new URL(req.url, `http://192.168.86.30:3000`);
-	console.log(myURL);    
+        const myURL = new URL(req.url, `http://${req.headers.host}`);
+	    console.log(req.headers.host);    
         if(myURL.pathname === "/sprinklerStatus"){
             let body = "";
 
@@ -104,7 +101,7 @@ export function setupHttpServer(server){
                     const parsedBody = JSON.parse(body);
                     const id = parsedBody.id;
                     const isActive = parsedBody.isActive;
-			console.log("here i am")
+			        console.log("here i am")
                     frontLawn.writeSync(frontLawn.readSync() === 0 ? 1:0);
                     updateZoneStatus(res, id, isActive);
                     res.end(`Attempted to change ${id} status to ${isActive}`)
