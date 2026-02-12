@@ -11,6 +11,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
+const REQUESTERS_IP = window.location.hostname;
 const LOCAL_IP = process.env.LOCAL_IP;
 const filePath = path.resolve('./irrigators.json');
 
@@ -88,7 +89,7 @@ export function setupHttpServer(server){
             res.end('HTTP Server Running');
         }
     } else if (req.method === "POST"){
-        const myURL = new URL(req.url, `http://${req.headers.host}`);
+        const myURL = new URL(req.url, `http://${REQUESTERS_IP}`);
 	    console.log(req.headers.host);    
         if(myURL.pathname === "/sprinklerStatus"){
             let body = "";
@@ -102,7 +103,7 @@ export function setupHttpServer(server){
                     const id = parsedBody.id;
                     const isActive = parsedBody.isActive;
 			        console.log("here i am")
-                    frontLawn.writeSync(frontLawn.readSync() === 0 ? 1:0);
+                    frontLawn.writeSync(Number(isActive));
                     updateZoneStatus(res, id, isActive);
                     res.end(`Attempted to change ${id} status to ${isActive}`)
                 } catch (err) {
