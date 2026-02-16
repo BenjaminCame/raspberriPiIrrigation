@@ -3,18 +3,18 @@ import fs from "node:fs";
 import path from "node:path";
 import { URL } from "node:url";
 import { broadcastIrrigationStatus } from './irrigationWSServer.js'
-import { createRequire } from "module"
-const require = createRequire(import.meta.url)
-const { Gpio } = require('onoff')
+// import { createRequire } from "module"
+// const require = createRequire(import.meta.url)
+// const { Gpio } = require('onoff')
 import dotenv from 'dotenv'
 
 
 dotenv.config()
 
-const LOCAL_IP = process.env.LOCAL_IP;
+// const REQUESTERS_IP = window.location.hostname;
 const filePath = path.resolve('./irrigators.json');
 
-const frontLawn = new Gpio(2, 'out');
+// const frontLawn = new Gpio(2, 'out');
 
 export function readIrrigators() {
     try {
@@ -62,7 +62,6 @@ function updateZoneStatus(res, id , isActive){
 
 export function setupHttpServer(server){
     server.on('request', (req, res) => {
-    
     // Set common CORS headers for all requests
     res.setHeader('Access-Control-Allow-Origin', '*'); // allow all origins TODO have only my website as origin
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS'); // allowed methods
@@ -74,6 +73,8 @@ export function setupHttpServer(server){
       res.end();
       return; // stop further processing
     }
+    const REQUESTERS_IP = req.headers["x-forward-for"] || req.socket.remoteAddress;
+    console.log("Request IP:", REQUESTERS_IP)
 
     if( req.method === 'GET'){
         if (req.url === '/status') {
@@ -88,8 +89,9 @@ export function setupHttpServer(server){
             res.end('HTTP Server Running');
         }
     } else if (req.method === "POST"){
-        const myURL = new URL(req.url, `http://${req.headers.host}`);
-	    console.log(req.headers.host);    
+        console.log("req.headers.host", req.headers.host);  
+        const myURL = new URL(req.url, `http://${REQUESTERS_IP}`);
+	    
         if(myURL.pathname === "/sprinklerStatus"){
             let body = "";
 
@@ -102,7 +104,7 @@ export function setupHttpServer(server){
                     const id = parsedBody.id;
                     const isActive = parsedBody.isActive;
 			        console.log("here i am")
-                    frontLawn.writeSync(frontLawn.readSync() === 0 ? 1:0);
+                    // frontLawn.writeSync(frontLawn.readSync() === 0 ? 1:0);
                     updateZoneStatus(res, id, isActive);
                     res.end(`Attempted to change ${id} status to ${isActive}`)
                 } catch (err) {

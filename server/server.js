@@ -13,6 +13,6 @@ setupWSServer(server);
 setupHttpServer(server);
 
 
-server.listen(PORT,() => {
+server.listen(PORT,"0.0.0.0",() => {
     console.log(`Root server Listening on ${PORT} IP ${LOCAL_IP}`)
 })
