@@ -4,6 +4,8 @@ services:
     image: irrigation-server
     container_name: irrigation-server
     privileged: true
+    devices:
+      - /dev/gpiomem  
     ports:
       - "3000:3000"
     environment:
