@@ -6,7 +6,7 @@ import  dotenv from "dotenv";
 dotenv.config();
 
 const server = createServer();
-const PORT = process.env.LOCAL_PORT;
+const PORT = process.env.PORT;
 const LOCAL_IP = process.env.LOCAL_IP
 
 setupWSServer(server);
